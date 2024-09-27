@@ -1,6 +1,5 @@
-import { MongooseModule } from '@nestjs/mongoose';
+import { registerAs } from '@nestjs/config';
 
-export const DatabaseConfig = MongooseModule.forRoot('mongodb://localhost/nest', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+export default registerAs('database', () => ({
+  uri: process.env.MONGODB_URI,
+}));

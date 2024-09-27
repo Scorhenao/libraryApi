@@ -1,9 +1,11 @@
-import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
+import { ConfigModule } from '@nestjs/config';
 import { CommonModule } from './common/commo.module';
-import { ConfigModule } from './config/config.module';
+import { Module } from '@nestjs/common';
 
 @Module({
-  imports: [MongooseModule.forRoot('mongodb://localhost/nest'), CommonModule, ConfigModule],
+  imports: [
+    ConfigModule, // Solo importa ConfigModule una vez
+    CommonModule,
+  ],
 })
 export class AppModule {}
