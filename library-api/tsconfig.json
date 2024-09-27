@@ -17,5 +17,7 @@
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false
-  }
+  },
+  "include": ["src/**/*", "test/**/*.spec.ts"],  // Asegúrate de incluir tus archivos de prueba
+  "exclude": ["node_modules", "dist"]
 }
