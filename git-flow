@@ -1,0 +1,58 @@
+# 🚀 Features derivadas de las Historias de Usuario
+
+1. **📚 Feature 1: Crear Libro**
+   - **Descripción:** Implementar la funcionalidad para que un administrador pueda agregar nuevos libros a la base de datos.
+   - **Historia relacionada:** Historia 1
+   - **Tareas:**
+     - Crear un endpoint para agregar libros.
+     - Implementar validaciones para los campos requeridos.
+     - Manejar errores en la creación de libros.
+
+2. **📖 Feature 2: Consultar Libros**
+   - **Descripción:** Permitir a los visitantes obtener una lista de todos los libros disponibles en el sistema.
+   - **Historia relacionada:** Historia 2
+   - **Tareas:**
+     - Crear un endpoint para listar libros.
+     - Implementar paginación y filtros (por autor, género, etc.).
+     - Manejar casos donde no haya libros disponibles.
+
+3. **📑 Feature 3: Detalle de Libro**
+   - **Descripción:** Proporcionar a los usuarios la posibilidad de ver detalles específicos de un libro.
+   - **Historia relacionada:** Historia 3
+   - **Tareas:**
+     - Crear un endpoint para obtener detalles de un libro por ID.
+     - Implementar manejo de errores para libros no encontrados.
+
+4. **🔄 Feature 4: Actualizar Libro**
+   - **Descripción:** Permitir a los administradores actualizar la información de libros existentes.
+   - **Historia relacionada:** Historia 4
+   - **Tareas:**
+     - Crear un endpoint para actualizar libros.
+     - Implementar validaciones para los campos de entrada.
+     - Manejar errores cuando el libro no existe.
+
+5. **❌ Feature 5: Eliminar Libro**
+   - **Descripción:** Implementar la capacidad de eliminar libros del sistema.
+   - **Historia relacionada:** Historia 5
+   - **Tareas:**
+     - Crear un endpoint para eliminar libros por ID.
+     - Manejar errores y confirmar la eliminación.
+
+6. **✅ Feature 6: Validaciones de Entrada**
+   - **Descripción:** Asegurar que la API valide correctamente los datos recibidos.
+   - **Historia relacionada:** Historia 6
+   - **Tareas:**
+     - Implementar validaciones usando `class-validator`.
+     - Crear mensajes de error claros en caso de validaciones fallidas.
+
+7. **🧪 Feature 7: Pruebas Unitarias**
+   - **Descripción:** Implementar pruebas unitarias para garantizar la funcionalidad de la API.
+   - **Historia relacionada:** Historia 7
+   - **Tareas:**
+     - Escribir pruebas unitarias para cada endpoint y servicio.
+     - Verificar tanto casos de éxito como de error.
+
+### Implementación en Gitflow
+- Cada **feature** se desarrollaría en su propia rama (`feature/nombre-de-la-feature`).
+- Una vez completada, cada rama se fusionaría con la rama `develop`.
+- Luego, se realizaría una revisión de código antes de fusionar con la rama `main` para un despliegue en producción.
