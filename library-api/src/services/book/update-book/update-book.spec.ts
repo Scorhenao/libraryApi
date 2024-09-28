@@ -4,6 +4,7 @@ import { getModelToken } from '@nestjs/mongoose';
 import { BookEntity } from 'src/entities/book.schema';
 import { UpdateBookDto } from './dto/update-book.dto';
 
+// Primero define el mockBook
 const mockBook = {
   uuid: 'mock-uuid',
   titulo: 'Test Book',
@@ -14,7 +15,7 @@ const mockBook = {
   },
   publicatedAt: new Date('2022-01-01'),
   genre: 'Fiction',
-  save: jest.fn().mockResolvedValue(mockBook),
+  save: jest.fn(), // Aquí solo lo definimos, no necesitamos mockear su valor aquí
 };
 
 // Definimos el mock del modelo
@@ -57,6 +58,12 @@ describe('UpdateBookService', () => {
         publicatedAt: new Date('2023-01-01'),
         genre: 'Updated Genre',
       };
+
+      // Aquí necesitas mockear la función save
+      mockBook.save.mockResolvedValue({
+        ...mockBook,
+        ...updateBookDto,
+      });
 
       const result = await service.update('mock-uuid', updateBookDto);
 
