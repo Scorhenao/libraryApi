@@ -1,6 +1,5 @@
 import { IsString, IsOptional } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { Author } from 'src/common/interfaces';
 
 export class UpdateBookDto {
   @ApiProperty({ description: 'Title of the book', required: false })
@@ -10,7 +9,7 @@ export class UpdateBookDto {
 
   @ApiProperty({ description: 'Author object', required: false })
   @IsOptional()
-  author?: Author;
+  author?: string;
 
   @ApiProperty({ description: 'Publication date of the book', required: false })
   @IsOptional()

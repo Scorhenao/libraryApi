@@ -12,5 +12,6 @@ import { AuthorsController } from './authors.controller';
   ],
   controllers: [AuthorsController],
   providers: [CreateAuthorService],
+  exports: [MongooseModule],
 })
 export class AuthorsModule {}

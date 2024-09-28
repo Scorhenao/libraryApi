@@ -17,6 +17,7 @@ import { UseInterceptors } from '@nestjs/common';
 import { UpdateBookDto } from './update-book/dto/update-book.dto';
 import { UpdateBookService } from './update-book/update-book.service';
 import { CreateBookResponseDto } from './create-book/dto/create-book-response.dto';
+import { UpdateBookResponseDto } from './update-book/dto/update-book-response.dto';
 
 @ApiTags('books')
 @UseInterceptors(ErrorHandlingInterceptor) // Aplica el interceptor a todo el controlador
@@ -95,13 +96,13 @@ export class BooksController {
   @ApiResponse({
     status: 200,
     description: 'Book updated successfully',
-    type: BookDto,
+    type: UpdateBookResponseDto, // Cambia esto para usar el Response DTO
   })
   @ApiResponse({ status: 404, description: 'Book not found' })
   async update(
     @Param('id') id: string,
     @Body() updateBookDto: UpdateBookDto,
-  ): Promise<BookDto> {
+  ): Promise<UpdateBookResponseDto> {
     const updatedBook = await this.updateBookService.update(id, updateBookDto);
 
     return {
@@ -111,7 +112,7 @@ export class BooksController {
         name: updatedBook.author.name, // Asegúrate de que Author tiene estas propiedades
         lastName: updatedBook.author.lastName,
       },
-      publicatedAt: updatedBook.publicatedAt, // Mantén como Date
+      publicatedAt: updatedBook.publicatedAt,
       genre: updatedBook.genre,
     };
   }
