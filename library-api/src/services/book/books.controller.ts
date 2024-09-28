@@ -5,19 +5,23 @@ import { CreateBookService } from './create-book/create-book.service';
 import {
   Body,
   Controller,
+  Delete,
   Get,
+  HttpCode,
+  HttpStatus,
   Param,
   Patch,
   Post,
   Query,
 } from '@nestjs/common';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { BookDto } from './find-books/dto/book.dto';
 import { UseInterceptors } from '@nestjs/common';
 import { UpdateBookDto } from './update-book/dto/update-book.dto';
 import { UpdateBookService } from './update-book/update-book.service';
 import { CreateBookResponseDto } from './create-book/dto/create-book-response.dto';
 import { UpdateBookResponseDto } from './update-book/dto/update-book-response.dto';
+import { DeleteBookService } from './delete-book/delete-book.service';
 
 @ApiTags('books')
 @UseInterceptors(ErrorHandlingInterceptor) // Aplica el interceptor a todo el controlador
@@ -27,6 +31,7 @@ export class BooksController {
     private readonly createBookService: CreateBookService,
     private readonly findBooksService: FindBooksService,
     private readonly updateBookService: UpdateBookService,
+    private readonly deleteBookService: DeleteBookService,
   ) {}
 
   @Post()
@@ -109,11 +114,19 @@ export class BooksController {
       titulo: updatedBook.titulo,
       author: {
         _id: updatedBook.author._id,
-        name: updatedBook.author.name, // Asegúrate de que Author tiene estas propiedades
+        name: updatedBook.author.name,
         lastName: updatedBook.author.lastName,
       },
       publicatedAt: updatedBook.publicatedAt,
       genre: updatedBook.genre,
     };
+  }
+  @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT) // Código de estado 204
+  @ApiOperation({ summary: 'Delete a book by ID' }) // Descripción del endpoint
+  @ApiResponse({ status: 204, description: 'Libro eliminado exitosamente.' }) // Respuesta para el éxito
+  @ApiResponse({ status: 404, description: 'Libro no encontrado.' }) // Respuesta si no se encuentra el libro
+  async delete(@Param('id') id: string): Promise<void> {
+    await this.deleteBookService.delete(id);
   }
 }
