@@ -1,3 +1,4 @@
+import { ErrorHandlingInterceptor } from './../../common/interceptors/error-handling.interceptor';
 import { FindBooksService } from './find-books/find-books.service';
 import { Book } from 'src/common/interfaces';
 import { CreateBookDto } from './create-book/dto/create-book.dto';
@@ -7,13 +8,17 @@ import {
   Body,
   Controller,
   Get,
+  NotFoundException,
+  Param,
   Post,
   Query,
 } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { BookDto } from './find-books/dto/book.dto';
+import { UseInterceptors } from '@nestjs/common';
 
-@ApiTags('books') // Categoriza el endpoint
+@ApiTags('books')
+@UseInterceptors(ErrorHandlingInterceptor) // Aplica el interceptor a todo el controlador
 @Controller('books')
 export class BooksController {
   constructor(
@@ -56,12 +61,37 @@ export class BooksController {
 
     return books.map((book) => ({
       titulo: book.titulo,
-      author: book.author.toString(), // Asegúrate de que esto sea un string
+      author: book.author.toString(),
       publicatedAt:
         book.publicatedAt instanceof Date
           ? book.publicatedAt.toISOString()
-          : book.publicatedAt.toString(), // Siempre devuelve un string
-      genre: book.genre, // Asignación directa
+          : book.publicatedAt.toString(),
+      genre: book.genre,
     }));
+  }
+
+  @Get(':id')
+  @ApiResponse({
+    status: 200,
+    description: 'Detalles del libro',
+    type: BookDto,
+  })
+  @ApiResponse({ status: 404, description: 'Libro no encontrado' })
+  async findOne(@Param('id') id: string): Promise<BookDto> {
+    const book = await this.findBooksService.findOne(id);
+
+    if (!book) {
+      throw new NotFoundException('Libro no encontrado');
+    }
+
+    return {
+      titulo: book.titulo,
+      author: book.author.toString(),
+      publicatedAt:
+        book.publicatedAt instanceof Date
+          ? book.publicatedAt.toISOString()
+          : String(book.publicatedAt),
+      genre: book.genre,
+    };
   }
 }
