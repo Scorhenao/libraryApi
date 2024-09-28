@@ -1,5 +1,3 @@
-// src/interceptors/error-handling.interceptor.ts
-
 import {
   Injectable,
   NestInterceptor,
@@ -11,16 +9,16 @@ import {
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-
 @Injectable()
 export class ErrorHandlingInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     return next.handle().pipe(
-      map((data) => ({
-        status: 'success',
-        data,
-      })),
+      map((data) => {
+        // Retornar directamente el objeto de libro sin añadir más capas
+        return data;
+      }),
       catchError((error) => {
+        console.error('Error en el interceptor:', error);
         if (error instanceof BadRequestException) {
           throw new BadRequestException({
             status: 'error',
