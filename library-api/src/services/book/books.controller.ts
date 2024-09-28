@@ -10,12 +10,15 @@ import {
   Get,
   NotFoundException,
   Param,
+  Patch,
   Post,
   Query,
 } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { BookDto } from './find-books/dto/book.dto';
 import { UseInterceptors } from '@nestjs/common';
+import { UpdateBookDto } from './update-book/dto/update-book.dto';
+import { UpdateBookService } from './update-book/update-book.service';
 
 @ApiTags('books')
 @UseInterceptors(ErrorHandlingInterceptor) // Aplica el interceptor a todo el controlador
@@ -24,6 +27,7 @@ export class BooksController {
   constructor(
     private readonly createBookService: CreateBookService,
     private readonly findBooksService: FindBooksService,
+    private readonly updateBookService: UpdateBookService,
   ) {}
 
   @Post()
@@ -61,11 +65,8 @@ export class BooksController {
 
     return books.map((book) => ({
       titulo: book.titulo,
-      author: book.author.toString(),
-      publicatedAt:
-        book.publicatedAt instanceof Date
-          ? book.publicatedAt.toISOString()
-          : book.publicatedAt.toString(),
+      author: book.author.toString(), // Asegúrate de que author sea un ObjectId
+      publicatedAt: book.publicatedAt.toISOString(),
       genre: book.genre,
     }));
   }
@@ -92,6 +93,26 @@ export class BooksController {
           ? book.publicatedAt.toISOString()
           : String(book.publicatedAt),
       genre: book.genre,
+    };
+  }
+
+  @Patch(':id')
+  @ApiResponse({
+    status: 200,
+    description: 'Book updated successfully',
+    type: BookDto,
+  })
+  @ApiResponse({ status: 404, description: 'Book not found' })
+  async update(
+    @Param('id') id: string,
+    @Body() updateBookDto: UpdateBookDto,
+  ): Promise<BookDto> {
+    const updatedBook = await this.updateBookService.update(id, updateBookDto);
+    return {
+      titulo: updatedBook.titulo,
+      author: updatedBook.author.toString(),
+      publicatedAt: updatedBook.publicatedAt.toISOString(),
+      genre: updatedBook.genre,
     };
   }
 }
