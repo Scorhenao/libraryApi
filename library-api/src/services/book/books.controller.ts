@@ -7,7 +7,6 @@ import {
   Body,
   Controller,
   Get,
-  NotFoundException,
   Param,
   Patch,
   Post,
@@ -38,19 +37,18 @@ export class BooksController {
   @ApiResponse({ status: 400, description: 'Bad Request.' })
   async create(@Body() createBookDto: CreateBookDto): Promise<BookDto> {
     if (!createBookDto.titulo) {
-      throw new BadRequestException('the title is required.');
+      throw new BadRequestException('The title is required.');
     }
     if (!createBookDto.genre) {
-      throw new BadRequestException('El genre is required.');
+      throw new BadRequestException('The genre is required.');
     }
-    createBookDto.publicatedAt = new Date(createBookDto.publicatedAt);
 
     return this.createBookService.create(createBookDto);
   }
 
   @Get()
-  @ApiResponse({ status: 200, description: 'list of books', type: [BookDto] })
-  @ApiResponse({ status: 404, description: 'there are not books available' })
+  @ApiResponse({ status: 200, description: 'List of books', type: [BookDto] })
+  @ApiResponse({ status: 404, description: 'There are no books available' })
   async findAll(
     @Query('page') page: number = 1,
     @Query('limit') limit: number = 10,
@@ -68,36 +66,28 @@ export class BooksController {
       titulo: book.titulo,
       author: {
         id: book.author.toString(),
-        name: book.author.name,
+        name: book.author.name, // Asegúrate de que Author tenga estas propiedades
         lastName: book.author.lastName,
       },
-      publicatedAt: book.publicatedAt.toISOString(),
+      publicatedAt: book.publicatedAt, // No convertir a string, dejar como Date
       genre: book.genre,
     }));
   }
 
   @Get(':id')
-  @ApiResponse({
-    status: 200,
-    description: 'details of book',
-    type: BookDto,
-  })
+  @ApiResponse({ status: 200, description: 'Details of book', type: BookDto })
   @ApiResponse({ status: 404, description: 'Book not found' })
   async findOne(@Param('id') id: string): Promise<BookDto> {
     const book = await this.findBooksService.findOne(id);
-
-    if (!book) {
-      throw new NotFoundException('Book not found');
-    }
 
     return {
       titulo: book.titulo,
       author: {
         id: book.author.toString(), // Asumiendo que tienes el ID del autor
-        name: book.author.name, // Asegúrate de que Author tenga estas propiedades
+        name: book.author.name,
         lastName: book.author.lastName,
       },
-      publicatedAt: book.publicatedAt.toISOString(),
+      publicatedAt: book.publicatedAt, // No convertir a string
       genre: book.genre,
     };
   }
@@ -119,10 +109,10 @@ export class BooksController {
       titulo: updatedBook.titulo,
       author: {
         id: updatedBook.author.toString(), // Asumiendo que tienes un ID del autor
-        name: updatedBook.author.name, // Asegúrate de que estas propiedades existan
+        name: updatedBook.author.name, // Asegúrate de que Author tiene estas propiedades
         lastName: updatedBook.author.lastName,
       },
-      publicatedAt: updatedBook.publicatedAt.toISOString(),
+      publicatedAt: updatedBook.publicatedAt, // Mantén como Date
       genre: updatedBook.genre,
     };
   }

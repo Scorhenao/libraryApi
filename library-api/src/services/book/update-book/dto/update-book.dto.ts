@@ -1,4 +1,4 @@
-import { IsString, IsOptional, IsDateString } from 'class-validator';
+import { IsString, IsOptional } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { Author } from 'src/common/interfaces';
 
@@ -10,12 +10,11 @@ export class UpdateBookDto {
 
   @ApiProperty({ description: 'Author object', required: false })
   @IsOptional()
-  author?: Author; // Mantener como Author
+  author?: Author;
 
   @ApiProperty({ description: 'Publication date of the book', required: false })
-  @IsDateString()
   @IsOptional()
-  publicatedAt?: Date;
+  publicatedAt?: Date; // Cambia esto a Date
 
   @ApiProperty({ description: 'Genre of the book', required: false })
   @IsString()
