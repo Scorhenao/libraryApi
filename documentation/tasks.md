@@ -116,4 +116,28 @@
 - `jest` para pruebas unitarias.
 - `@nestjs/testing` para configurar el entorno de pruebas.
 
+Aquí tienes el contenido solicitado para copiar y pegar:
+
+📋 **Historia 8: Crear un administrador en la API**
+
+**Como** administrador principal del sistema,  
+**Quiero** poder crear otros administradores,  
+**Para** delegar el acceso y gestión del sistema a múltiples personas.
+
+- **Given:** El administrador principal tiene acceso al sistema.
+- **When:** El administrador principal envía una solicitud para crear un nuevo administrador con los campos: nombre, email, contraseña, etc.
+- **Then:** La API debe registrar al nuevo administrador en la base de datos, almacenar la contraseña de forma segura con hashing, y devolver una respuesta de éxito.
+- **And:** Si el email ya existe,
+- **Then:** la API debe devolver un error que indique que el administrador ya está registrado.
+
 ---
+
+**Using:**
+
+- `@nestjs/common` para controladores y servicios.
+- `class-validator` para validaciones.
+- `bcryptjs` para el hash de las contraseñas.
+- `TypeORM` o `Mongoose` para la interacción con la base de datos.
+
+---
+
