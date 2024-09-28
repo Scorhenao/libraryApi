@@ -39,17 +39,17 @@ export class BooksController {
   @ApiResponse({ status: 400, description: 'Bad Request.' })
   async create(@Body() createBookDto: CreateBookDto): Promise<Book> {
     if (!createBookDto.titulo) {
-      throw new BadRequestException('El título es obligatorio.');
+      throw new BadRequestException('the title is required.');
     }
     if (!createBookDto.genre) {
-      throw new BadRequestException('El genero es obligatorio.');
+      throw new BadRequestException('El genre is required.');
     }
     return this.createBookService.create(createBookDto);
   }
 
   @Get()
-  @ApiResponse({ status: 200, description: 'Lista de libros', type: [BookDto] })
-  @ApiResponse({ status: 404, description: 'No hay libros disponibles' })
+  @ApiResponse({ status: 200, description: 'list of books', type: [BookDto] })
+  @ApiResponse({ status: 404, description: 'there are not books available' })
   async findAll(
     @Query('page') page: number = 1,
     @Query('limit') limit: number = 10,
@@ -65,7 +65,11 @@ export class BooksController {
 
     return books.map((book) => ({
       titulo: book.titulo,
-      author: book.author.toString(), // Asegúrate de que author sea un ObjectId
+      author: {
+        id: book.author.toString(),
+        name: book.author.name,
+        lastName: book.author.lastName,
+      },
       publicatedAt: book.publicatedAt.toISOString(),
       genre: book.genre,
     }));
@@ -74,24 +78,25 @@ export class BooksController {
   @Get(':id')
   @ApiResponse({
     status: 200,
-    description: 'Detalles del libro',
+    description: 'details of book',
     type: BookDto,
   })
-  @ApiResponse({ status: 404, description: 'Libro no encontrado' })
+  @ApiResponse({ status: 404, description: 'Book not found' })
   async findOne(@Param('id') id: string): Promise<BookDto> {
     const book = await this.findBooksService.findOne(id);
 
     if (!book) {
-      throw new NotFoundException('Libro no encontrado');
+      throw new NotFoundException('Book not found');
     }
 
     return {
       titulo: book.titulo,
-      author: book.author.toString(),
-      publicatedAt:
-        book.publicatedAt instanceof Date
-          ? book.publicatedAt.toISOString()
-          : String(book.publicatedAt),
+      author: {
+        id: book.author.toString(), // Asumiendo que tienes el ID del autor
+        name: book.author.name, // Asegúrate de que Author tenga estas propiedades
+        lastName: book.author.lastName,
+      },
+      publicatedAt: book.publicatedAt.toISOString(),
       genre: book.genre,
     };
   }
@@ -108,9 +113,14 @@ export class BooksController {
     @Body() updateBookDto: UpdateBookDto,
   ): Promise<BookDto> {
     const updatedBook = await this.updateBookService.update(id, updateBookDto);
+
     return {
       titulo: updatedBook.titulo,
-      author: updatedBook.author.toString(),
+      author: {
+        id: updatedBook.author.toString(), // Asumiendo que tienes un ID del autor
+        name: updatedBook.author.name, // Asegúrate de que estas propiedades existan
+        lastName: updatedBook.author.lastName,
+      },
       publicatedAt: updatedBook.publicatedAt.toISOString(),
       genre: updatedBook.genre,
     };
