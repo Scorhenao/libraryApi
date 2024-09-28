@@ -1,9 +1,8 @@
-import { Date } from 'mongoose';
 import { Author } from 'src/entities/autor.schema';
 
 export interface Book {
   titulo: string;
-  author: Author;
-  publicatedAt: Date;
+  author: Author; // Se mantiene como objeto Author
+  publicatedAt: Date; // Date de JavaScript
   genre: string;
 }
