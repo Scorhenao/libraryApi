@@ -24,15 +24,15 @@ export class UpdateBookService {
       book.titulo = updateBookDto.titulo;
     }
     if (updateBookDto.author) {
-      book.author = updateBookDto.author; // Se mantiene como objeto Author
+      book.author = updateBookDto.author;
     }
     if (updateBookDto.publicatedAt) {
-      book.publicatedAt = new Date(updateBookDto.publicatedAt); // Convierte a Date
+      book.publicatedAt = new Date(updateBookDto.publicatedAt);
     }
     if (updateBookDto.genre) {
       book.genre = updateBookDto.genre;
     }
 
-    return book.save(); // Guarda el libro actualizado
+    return book.save();
   }
 }
