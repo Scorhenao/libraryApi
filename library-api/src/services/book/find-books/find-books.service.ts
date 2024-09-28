@@ -33,4 +33,12 @@ export class FindBooksService {
 
     return books;
   }
+
+  async findOne(id: string): Promise<BookDocument> {
+    const book = await this.bookModel.findById(id).exec();
+    if (!book) {
+      throw new NotFoundException('Libro no encontrado');
+    }
+    return book;
+  }
 }
