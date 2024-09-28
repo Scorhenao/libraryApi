@@ -1,13 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { CreateBookService } from './create-book.service';
 import { getModelToken } from '@nestjs/mongoose';
+import { BookEntity } from 'src/entities/book.schema';
 import { CreateBookDto } from './dto/create-book.dto';
 
 const mockBook = {
   uuid: 'mock-uuid',
   titulo: 'Test Book',
   author: {
-    id: 'Author ID',
+    id: 'mock-author-uuid',
     name: 'Author Name',
     lastName: 'Author LastName',
   },
@@ -16,8 +17,17 @@ const mockBook = {
 };
 
 const mockBookModel = {
-  create: jest.fn().mockResolvedValue(mockBook),
-  save: jest.fn().mockResolvedValue(mockBook),
+  create: jest.fn().mockImplementation((dto) => {
+    return {
+      ...dto,
+      save: jest.fn().mockResolvedValue(mockBook),
+    };
+  }),
+  // Simular el constructor
+  new: jest.fn().mockImplementation(function (dto) {
+    Object.assign(this, dto);
+    this.save = jest.fn().mockResolvedValue(mockBook);
+  }),
 };
 
 describe('CreateBookService', () => {
@@ -28,7 +38,7 @@ describe('CreateBookService', () => {
       providers: [
         CreateBookService,
         {
-          provide: getModelToken('BookEntity'),
+          provide: getModelToken(BookEntity.name),
           useValue: mockBookModel,
         },
       ],
@@ -46,22 +56,21 @@ describe('CreateBookService', () => {
       const createBookDto: CreateBookDto = {
         titulo: 'Test Book',
         author: {
-          id: 'Author ID',
+          id: 'mock-author-uuid',
           name: 'Author Name',
           lastName: 'Author LastName',
         },
-        publicatedAt: '2022-01-01',
+        publicatedAt: new Date('2022-01-01'),
         genre: 'Fiction',
       };
 
       const result = await service.create(createBookDto);
 
       expect(result).toEqual(mockBook);
-      expect(mockBookModel.create).toHaveBeenCalledWith(createBookDto);
-    });
-
-    it('should throw an error if the author does not exist', async () => {
-      // Puedes simular la validación de un autor aquí si decides implementarla más tarde.
+      expect(mockBookModel.create).toHaveBeenCalledWith({
+        ...createBookDto,
+        publicatedAt: expect.any(Date),
+      });
     });
   });
 });

@@ -1,6 +1,5 @@
 import { ErrorHandlingInterceptor } from './../../common/interceptors/error-handling.interceptor';
 import { FindBooksService } from './find-books/find-books.service';
-import { Book } from 'src/common/interfaces';
 import { CreateBookDto } from './create-book/dto/create-book.dto';
 import { CreateBookService } from './create-book/create-book.service';
 import {
@@ -37,13 +36,15 @@ export class BooksController {
     type: CreateBookDto,
   })
   @ApiResponse({ status: 400, description: 'Bad Request.' })
-  async create(@Body() createBookDto: CreateBookDto): Promise<Book> {
+  async create(@Body() createBookDto: CreateBookDto): Promise<BookDto> {
     if (!createBookDto.titulo) {
       throw new BadRequestException('the title is required.');
     }
     if (!createBookDto.genre) {
       throw new BadRequestException('El genre is required.');
     }
+    createBookDto.publicatedAt = new Date(createBookDto.publicatedAt);
+
     return this.createBookService.create(createBookDto);
   }
 

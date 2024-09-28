@@ -16,7 +16,7 @@ export class CreateBookDto {
   @ApiProperty({ description: 'Publication date of the book' })
   @IsDateString()
   @IsNotEmpty()
-  publicatedAt: string;
+  publicatedAt: Date;
 
   @ApiProperty({ description: 'Genre of the book' })
   @IsString()

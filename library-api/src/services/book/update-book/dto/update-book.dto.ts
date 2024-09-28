@@ -15,7 +15,7 @@ export class UpdateBookDto {
   @ApiProperty({ description: 'Publication date of the book', required: false })
   @IsDateString()
   @IsOptional()
-  publicatedAt?: string;
+  publicatedAt?: Date;
 
   @ApiProperty({ description: 'Genre of the book', required: false })
   @IsString()

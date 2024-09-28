@@ -58,7 +58,7 @@ describe('BooksController', () => {
           name: 'Author Name',
           lastName: 'Author LastName',
         }, // Cambia esto a un objeto Author
-        publicatedAt: '2022-01-01',
+        publicatedAt: new Date('2022-01-01'),
         genre: 'Fiction',
       };
 
@@ -79,7 +79,7 @@ describe('BooksController', () => {
           name: 'Author Name',
           lastName: 'Author LastName',
         },
-        publicatedAt: '2022-01-01',
+        publicatedAt: new Date('2022-01-01'),
         genre: 'Fiction',
       };
 

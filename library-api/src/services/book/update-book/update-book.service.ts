@@ -19,7 +19,6 @@ export class UpdateBookService {
       throw new NotFoundException('Libro no encontrado');
     }
 
-    // Actualizar los campos
     if (updateBookDto.titulo) {
       book.titulo = updateBookDto.titulo;
     }

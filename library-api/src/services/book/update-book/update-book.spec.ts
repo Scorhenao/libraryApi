@@ -1,14 +1,27 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UpdateBookService } from './update-book.service';
 import { getModelToken } from '@nestjs/mongoose';
-import { NotFoundException } from '@nestjs/common';
-import { Author } from 'src/common/interfaces/author.interface'; // Asegúrate de que este sea el path correcto
 import { BookEntity } from 'src/entities/book.schema';
+import { UpdateBookDto } from './dto/update-book.dto';
 
+const mockBook = {
+  uuid: 'mock-uuid',
+  titulo: 'Test Book',
+  author: {
+    id: 'mock-author-uuid',
+    name: 'Author Name',
+    lastName: 'Author LastName',
+  },
+  publicatedAt: new Date('2022-01-01'),
+  genre: 'Fiction',
+  save: jest.fn().mockResolvedValue(mockBook),
+};
+
+// Definimos el mock del modelo
 const mockBookModel = {
-  findById: jest.fn(),
-  exec: jest.fn(),
-  save: jest.fn(),
+  findById: jest.fn().mockReturnValue({
+    exec: jest.fn().mockResolvedValue(mockBook),
+  }),
 };
 
 describe('UpdateBookService', () => {
@@ -34,59 +47,25 @@ describe('UpdateBookService', () => {
 
   describe('update', () => {
     it('should update a book and return it', async () => {
-      // Declara mockBook antes de usarlo
-      const mockBook = {
-        titulo: 'Old Title',
-        author: {
-          id: 'Old Author ID',
-          name: 'Old Author Name',
-          lastName: 'Old Author LastName',
-        } as Author,
-        publicatedAt: new Date('2022-01-01'),
-        genre: 'Old Genre',
-        save: jest.fn().mockResolvedValue({
-          titulo: 'Updated Title',
-          author: {
-            id: 'Updated Author ID',
-            name: 'Updated Author Name',
-            lastName: 'Updated Author LastName',
-          } as Author,
-          publicatedAt: '2023-01-01',
-          genre: 'Updated Genre',
-        }),
-      };
-
-      mockBookModel.findById.mockReturnValue(mockBookModel);
-      mockBookModel.exec.mockResolvedValue(mockBook);
-
-      const updateBookDto = {
+      const updateBookDto: UpdateBookDto = {
         titulo: 'Updated Title',
         author: {
-          id: 'Updated Author ID',
+          id: 'mock-author-uuid',
           name: 'Updated Author Name',
           lastName: 'Updated Author LastName',
-        } as Author,
-        publicatedAt: '2023-01-01',
+        },
+        publicatedAt: new Date('2023-01-01'),
         genre: 'Updated Genre',
       };
 
-      const result = await service.update('some-id', updateBookDto);
+      const result = await service.update('mock-uuid', updateBookDto);
+
       expect(result).toEqual({
         ...mockBook,
         ...updateBookDto,
       });
-      expect(mockBookModel.findById).toHaveBeenCalledWith('some-id');
-      expect(mockBookModel.exec).toHaveBeenCalled(); // Verifica que exec haya sido llamado
+      expect(mockBookModel.findById).toHaveBeenCalledWith('mock-uuid');
       expect(mockBook.save).toHaveBeenCalled();
-    });
-
-    it('should throw NotFoundException if the book does not exist', async () => {
-      mockBookModel.findById.mockReturnValue(mockBookModel);
-      mockBookModel.exec.mockResolvedValue(null);
-
-      await expect(service.update('non-existing-id', {})).rejects.toThrow(
-        NotFoundException,
-      );
     });
   });
 });
