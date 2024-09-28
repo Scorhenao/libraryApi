@@ -1,3 +1,5 @@
+
+---
 # 🚀 Features derivadas de las Historias de Usuario
 
 1. **📚 Feature 1: Crear Libro**
@@ -53,14 +55,22 @@
      - Verificar tanto casos de éxito como de error.
 
 8. **📋 Feature 8: Crear Admin**
+   - **Descripción:** Implementar la funcionalidad para que un administrador pueda crear otros administradores, gestionando así el acceso al sistema.
+   - **Historia relacionada:** Historia 8
+   - **Tareas:**
+     - Crear un endpoint para agregar nuevos administradores.
+     - Implementar validaciones para los campos requeridos (nombre, email, contraseña, etc.).
+     - Utilizar un hash para almacenar las contraseñas de forma segura.
+     - Manejar errores y responder adecuadamente si el administrador ya existe.
 
-- **Descripción:** Implementar la funcionalidad para que un administrador pueda crear otros administradores, gestionando así el acceso al sistema.
-- **Historia relacionada:** Historia 8
-- **Tareas:**
-  - Crear un endpoint para agregar nuevos administradores.
-  - Implementar validaciones para los campos requeridos (nombre, email, contraseña, etc.).
-  - Utilizar un hash para almacenar las contraseñas de forma segura.
-  - Manejar errores y responder adecuadamente si el administrador ya existe.
+9. **📖 Feature 9: Crear Autor**
+   - **Descripción:** Implementar la funcionalidad para que un administrador pueda agregar nuevos autores a la base de datos, facilitando así la gestión de libros asociados a los autores.
+   - **Historia relacionada:** Historia 9
+   - **Tareas:**
+     - Crear un endpoint para agregar nuevos autores.
+     - Implementar validaciones para los campos requeridos (nombre, apellido, biografía, etc.).
+     - Manejar errores en la creación de autores, como duplicados o campos vacíos.
+     - Almacenar la información del autor en la base de datos de manera segura.
 
 ---
 
@@ -68,3 +78,5 @@
 - Cada **feature** se desarrollaría en su propia rama (`feature/nombre-de-la-feature`).
 - Una vez completada, cada rama se fusionaría con la rama `develop`.
 - Luego, se realizaría una revisión de código antes de fusionar con la rama `main` para un despliegue en producción.
+
+---
