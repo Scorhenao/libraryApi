@@ -3,7 +3,6 @@ import { FindBooksService } from './find-books/find-books.service';
 import { CreateBookDto } from './create-book/dto/create-book.dto';
 import { CreateBookService } from './create-book/create-book.service';
 import {
-  BadRequestException,
   Body,
   Controller,
   Get,
@@ -17,6 +16,7 @@ import { BookDto } from './find-books/dto/book.dto';
 import { UseInterceptors } from '@nestjs/common';
 import { UpdateBookDto } from './update-book/dto/update-book.dto';
 import { UpdateBookService } from './update-book/update-book.service';
+import { CreateBookResponseDto } from './create-book/dto/create-book-response.dto';
 
 @ApiTags('books')
 @UseInterceptors(ErrorHandlingInterceptor) // Aplica el interceptor a todo el controlador
@@ -29,21 +29,20 @@ export class BooksController {
   ) {}
 
   @Post()
-  @ApiResponse({
-    status: 201,
-    description: 'The book has been successfully created.',
-    type: CreateBookDto,
-  })
-  @ApiResponse({ status: 400, description: 'Bad Request.' })
-  async create(@Body() createBookDto: CreateBookDto): Promise<BookDto> {
-    if (!createBookDto.titulo) {
-      throw new BadRequestException('The title is required.');
-    }
-    if (!createBookDto.genre) {
-      throw new BadRequestException('The genre is required.');
-    }
-
-    return this.createBookService.create(createBookDto);
+  async create(
+    @Body() createBookDto: CreateBookDto,
+  ): Promise<CreateBookResponseDto> {
+    const createdBook = await this.createBookService.create(createBookDto);
+    return {
+      status: 'success', // Asegúrate de incluir el estado
+      data: {
+        id: createdBook.id, // ID del libro
+        titulo: createdBook.titulo,
+        author: createdBook.author._id, // Accede al _id del autor
+        publicatedAt: createdBook.publicatedAt,
+        genre: createdBook.genre,
+      },
+    };
   }
 
   @Get()
@@ -65,7 +64,7 @@ export class BooksController {
     return books.map((book) => ({
       titulo: book.titulo,
       author: {
-        id: book.author.toString(),
+        _id: book.author.toString(),
         name: book.author.name, // Asegúrate de que Author tenga estas propiedades
         lastName: book.author.lastName,
       },
@@ -83,7 +82,7 @@ export class BooksController {
     return {
       titulo: book.titulo,
       author: {
-        id: book.author.toString(), // Asumiendo que tienes el ID del autor
+        _id: book.author.toString(),
         name: book.author.name,
         lastName: book.author.lastName,
       },
@@ -108,7 +107,7 @@ export class BooksController {
     return {
       titulo: updatedBook.titulo,
       author: {
-        id: updatedBook.author.toString(), // Asumiendo que tienes un ID del autor
+        _id: updatedBook.author._id,
         name: updatedBook.author.name, // Asegúrate de que Author tiene estas propiedades
         lastName: updatedBook.author.lastName,
       },

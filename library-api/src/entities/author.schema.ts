@@ -8,11 +8,12 @@ export type AuthorDocument = HydratedDocument<Author>;
 @Schema()
 export class AuthorEntity implements Author {
   @Prop({ default: uuidv4 })
-  id: string;
+  _id: string;
 
+  @Prop({ required: true })
   name: string;
 
-  @Prop()
+  @Prop({ required: true })
   lastName: string;
 }
 
