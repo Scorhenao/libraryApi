@@ -19,6 +19,7 @@ export class UpdateBookService {
       throw new NotFoundException('Libro no encontrado');
     }
 
+    // Actualización condicional de los campos
     if (updateBookDto.titulo) {
       book.titulo = updateBookDto.titulo;
     }
@@ -26,7 +27,7 @@ export class UpdateBookService {
       book.author = updateBookDto.author;
     }
     if (updateBookDto.publicatedAt) {
-      book.publicatedAt = new Date(updateBookDto.publicatedAt);
+      book.publicatedAt = updateBookDto.publicatedAt; // Asigna como Date directamente
     }
     if (updateBookDto.genre) {
       book.genre = updateBookDto.genre;

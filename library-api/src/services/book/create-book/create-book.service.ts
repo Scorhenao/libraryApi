@@ -13,7 +13,7 @@ export class CreateBookService {
   async create(createBookDto: CreateBookDto): Promise<BookDocument> {
     const createdBook = new this.bookModel({
       ...createBookDto,
-      publicatedAt: new Date(createBookDto.publicatedAt), // Asegúrate de convertir el string a Date aquí
+      // publicatedAt ya es un Date aquí
     });
     return createdBook.save();
   }
