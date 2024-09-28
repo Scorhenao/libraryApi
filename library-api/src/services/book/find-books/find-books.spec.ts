@@ -10,6 +10,7 @@ const mockBookModel = {
   skip: jest.fn().mockReturnThis(),
   limit: jest.fn().mockReturnThis(),
   exec: jest.fn(),
+  findById: jest.fn(),
 };
 
 describe('FindBooksService', () => {
@@ -102,6 +103,30 @@ describe('FindBooksService', () => {
       });
       expect(result).toEqual(books);
       expect(mockBookModel.find).toHaveBeenCalledWith({ genre: 'Fiction' });
+    });
+  });
+
+  describe('findOne', () => {
+    it('should return a book by ID', async () => {
+      const mockBook = {
+        titulo: 'Test Book',
+        author: 'Author ID',
+        publicatedAt: new Date(),
+        genre: 'Fiction',
+      };
+      mockBookModel.findById.mockResolvedValue(mockBook);
+
+      const result = await service.findOne('some-id');
+      expect(result).toEqual(mockBook);
+      expect(mockBookModel.findById).toHaveBeenCalledWith('some-id');
+    });
+
+    it('should throw NotFoundException if the book does not exist', async () => {
+      mockBookModel.findById.mockResolvedValue(null);
+
+      await expect(service.findOne('non-existing-id')).rejects.toThrow(
+        NotFoundException,
+      );
     });
   });
 });
