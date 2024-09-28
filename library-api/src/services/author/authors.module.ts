@@ -1,5 +1,5 @@
 import { AuthorSchema, AuthorEntity } from './../../entities/author.schema';
-import { CreateAuthorService } from './create-author/create-autho.service';
+import { CreateAuthorService } from './create-author/create-author.service';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AuthorsController } from './authors.controller';

@@ -1,5 +1,5 @@
 import { AuthorDocument } from './../../entities/author.schema';
-import { CreateAuthorService } from './create-author/create-autho.service';
+import { CreateAuthorService } from './create-author/create-author.service';
 import { Body, Controller, Post } from '@nestjs/common';
 import { CreateAuthorDto } from './create-author/dto/create-author.dto';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
