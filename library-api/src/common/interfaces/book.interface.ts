@@ -1,5 +1,4 @@
-import { Author } from 'src/entities/autor.schema';
-
+import { Author } from './author.interface';
 export interface Book {
   titulo: string;
   author: Author; // Se mantiene como objeto Author
