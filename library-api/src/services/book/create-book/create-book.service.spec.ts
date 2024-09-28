@@ -1,28 +1,27 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { CreateBookService } from './create-book.service';
 import { getModelToken } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
 import { CreateBookDto } from './dto/create-book.dto';
-import { BookDocument } from 'src/entities/book.schema';
 
 const mockBook = {
   uuid: 'mock-uuid',
   titulo: 'Test Book',
-  author: 'Author ID',
+  author: {
+    id: 'Author ID',
+    name: 'Author Name',
+    lastName: 'Author LastName',
+  },
   publicatedAt: new Date('2022-01-01'),
   genre: 'Fiction',
 };
 
 const mockBookModel = {
-  new: jest.fn().mockResolvedValue(mockBook),
-  constructor: jest.fn().mockResolvedValue(mockBook),
-  create: jest.fn(),
-  save: jest.fn().mockResolvedValue(mockBook), // Simula el método save
+  create: jest.fn().mockResolvedValue(mockBook),
+  save: jest.fn().mockResolvedValue(mockBook),
 };
 
 describe('CreateBookService', () => {
   let service: CreateBookService;
-  let bookModel: Model<BookDocument>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -36,7 +35,6 @@ describe('CreateBookService', () => {
     }).compile();
 
     service = module.get<CreateBookService>(CreateBookService);
-    bookModel = module.get<Model<BookDocument>>(getModelToken('BookEntity'));
   });
 
   it('should be defined', () => {
@@ -47,7 +45,11 @@ describe('CreateBookService', () => {
     it('should create a book', async () => {
       const createBookDto: CreateBookDto = {
         titulo: 'Test Book',
-        author: 'Author ID',
+        author: {
+          id: 'Author ID',
+          name: 'Author Name',
+          lastName: 'Author LastName',
+        },
         publicatedAt: '2022-01-01',
         genre: 'Fiction',
       };
@@ -55,7 +57,7 @@ describe('CreateBookService', () => {
       const result = await service.create(createBookDto);
 
       expect(result).toEqual(mockBook);
-      expect(mockBookModel.save).toHaveBeenCalled(); // Verifica si se llamó a save
+      expect(mockBookModel.create).toHaveBeenCalledWith(createBookDto);
     });
 
     it('should throw an error if the author does not exist', async () => {

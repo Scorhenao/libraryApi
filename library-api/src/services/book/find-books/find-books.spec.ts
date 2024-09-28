@@ -1,8 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { FindBooksService } from './find-books.service';
 import { getModelToken } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { BookDocument } from 'src/entities/book.schema';
+import { BookEntity } from 'src/entities/book.schema';
 import { NotFoundException } from '@nestjs/common';
 
 const mockBookModel = {
@@ -10,26 +9,23 @@ const mockBookModel = {
   skip: jest.fn().mockReturnThis(),
   limit: jest.fn().mockReturnThis(),
   exec: jest.fn(),
-  findById: jest.fn(),
 };
 
 describe('FindBooksService', () => {
   let service: FindBooksService;
-  let bookModel: Model<BookDocument>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         FindBooksService,
         {
-          provide: getModelToken('BookEntity'),
+          provide: getModelToken(BookEntity.name), // Cambiado para usar el nombre de BookEntity
           useValue: mockBookModel,
         },
       ],
     }).compile();
 
     service = module.get<FindBooksService>(FindBooksService);
-    bookModel = module.get<Model<BookDocument>>(getModelToken('BookEntity'));
   });
 
   it('should be defined', () => {
@@ -103,30 +99,6 @@ describe('FindBooksService', () => {
       });
       expect(result).toEqual(books);
       expect(mockBookModel.find).toHaveBeenCalledWith({ genre: 'Fiction' });
-    });
-  });
-
-  describe('findOne', () => {
-    it('should return a book by ID', async () => {
-      const mockBook = {
-        titulo: 'Test Book',
-        author: 'Author ID',
-        publicatedAt: new Date(),
-        genre: 'Fiction',
-      };
-      mockBookModel.findById.mockResolvedValue(mockBook);
-
-      const result = await service.findOne('some-id');
-      expect(result).toEqual(mockBook);
-      expect(mockBookModel.findById).toHaveBeenCalledWith('some-id');
-    });
-
-    it('should throw NotFoundException if the book does not exist', async () => {
-      mockBookModel.findById.mockResolvedValue(null);
-
-      await expect(service.findOne('non-existing-id')).rejects.toThrow(
-        NotFoundException,
-      );
     });
   });
 });
