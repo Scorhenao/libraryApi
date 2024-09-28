@@ -52,6 +52,18 @@
      - Escribir pruebas unitarias para cada endpoint y servicio.
      - Verificar tanto casos de éxito como de error.
 
+8. **📋 Feature 8: Crear Admin**
+
+- **Descripción:** Implementar la funcionalidad para que un administrador pueda crear otros administradores, gestionando así el acceso al sistema.
+- **Historia relacionada:** Historia 8
+- **Tareas:**
+  - Crear un endpoint para agregar nuevos administradores.
+  - Implementar validaciones para los campos requeridos (nombre, email, contraseña, etc.).
+  - Utilizar un hash para almacenar las contraseñas de forma segura.
+  - Manejar errores y responder adecuadamente si el administrador ya existe.
+
+---
+
 ### Implementación en Gitflow
 - Cada **feature** se desarrollaría en su propia rama (`feature/nombre-de-la-feature`).
 - Una vez completada, cada rama se fusionaría con la rama `develop`.
