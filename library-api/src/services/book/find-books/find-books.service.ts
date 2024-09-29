@@ -9,6 +9,16 @@ export class FindBooksService {
     @InjectModel('BookEntity') private bookModel: Model<BookDocument>,
   ) {}
 
+  async findAllBooks(): Promise<BookDocument[]> {
+    const books = await this.bookModel.find().exec();
+
+    if (books.length === 0) {
+      throw new NotFoundException('No hay libros disponibles.');
+    }
+
+    return books;
+  }
+
   async findAll(options: {
     page: number;
     limit: number;

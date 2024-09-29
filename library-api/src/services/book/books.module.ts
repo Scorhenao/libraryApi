@@ -1,3 +1,4 @@
+import { DeleteBookService } from './delete-book/delete-book.service';
 import { AuthorsModule } from './../author/authors.module';
 import { CreateBookService } from './create-book/create-book.service';
 import { BookEntity, BookSchema } from './../../entities/book.schema';
@@ -12,8 +13,18 @@ import { UpdateBookService } from './update-book/update-book.service';
     MongooseModule.forFeature([{ name: BookEntity.name, schema: BookSchema }]),
     AuthorsModule,
   ],
-  providers: [CreateBookService, FindBooksService, UpdateBookService],
+  providers: [
+    CreateBookService,
+    FindBooksService,
+    UpdateBookService,
+    DeleteBookService,
+  ],
   controllers: [BooksController],
-  exports: [CreateBookService, FindBooksService, UpdateBookService],
+  exports: [
+    CreateBookService,
+    FindBooksService,
+    UpdateBookService,
+    DeleteBookService,
+  ],
 })
 export class BooksModule {}
