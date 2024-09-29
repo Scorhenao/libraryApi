@@ -17,6 +17,9 @@ export class AdminEntity implements Admin {
 
   @Prop({ required: true })
   password: string;
+
+  @Prop({ required: true })
+  role: string;
 }
 
 export const AdminSchema = SchemaFactory.createForClass(AdminEntity);
