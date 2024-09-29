@@ -1,4 +1,4 @@
-
+---
 ### 📚 Historia 1: Crear un libro en la API
 **Como** administrador de la biblioteca,  
 **Quiero** agregar nuevos libros al sistema,  
@@ -115,5 +115,42 @@
 **Using:** 
 - `jest` para pruebas unitarias.
 - `@nestjs/testing` para configurar el entorno de pruebas.
+
+---
+
+### 📋 Historia 8: Crear un administrador en la API
+**Como** administrador principal del sistema,  
+**Quiero** poder crear otros administradores,  
+**Para** delegar el acceso y gestión del sistema a múltiples personas.
+
+- **Given:** El administrador principal tiene acceso al sistema.
+- **When:** El administrador principal envía una solicitud para crear un nuevo administrador con los campos: nombre, email, contraseña, etc.
+- **Then:** La API debe registrar al nuevo administrador en la base de datos, almacenar la contraseña de forma segura con hashing, y devolver una respuesta de éxito.
+- **And:** Si el email ya existe,  
+**Then:** la API debe devolver un error que indique que el administrador ya está registrado.
+
+**Using:**
+- `@nestjs/common` para controladores y servicios.
+- `class-validator` para validaciones.
+- `bcryptjs` para el hash de las contraseñas.
+- `TypeORM` o `Mongoose` para la interacción con la base de datos.
+
+---
+
+### ✍️ Historia 9: Crear un autor en la API
+**Como** administrador de la biblioteca,  
+**Quiero** agregar nuevos autores al sistema,  
+**Para** gestionar fácilmente los libros asociados a los autores.
+
+- **Given:** El administrador tiene acceso a la API.
+- **When:** El administrador envía una solicitud para crear un nuevo autor con los campos: nombre, apellido, biografía, etc.
+- **Then:** La API debe registrar al nuevo autor en la base de datos y devolver una respuesta de éxito.
+- **And:** Si alguno de los campos obligatorios está vacío,  
+**Then:** la API debe devolver un error claro y manejado.
+
+**Using:**
+- `@nestjs/common` para controladores y servicios.
+- `class-validator` para validaciones.
+- `TypeORM` o `Mongoose` para interacción con la base de datos.
 
 ---
