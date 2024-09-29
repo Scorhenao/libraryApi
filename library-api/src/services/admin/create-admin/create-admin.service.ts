@@ -31,6 +31,7 @@ export class CreateAdminService {
       name,
       email,
       password: hashedPassword,
+      role: 'admin',
     });
 
     const savedAdmin = await newAdmin.save();
@@ -40,6 +41,8 @@ export class CreateAdminService {
       _id: savedAdmin._id,
       name: savedAdmin.name,
       email: savedAdmin.email,
+      password: savedAdmin.password,
+      role: savedAdmin.role,
     };
   }
 }

@@ -3,6 +3,7 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose'; // o TypeORM
 import { CreateAdminService } from './create-admin/create-admin.service';
 import { AdminEntity, AdminSchema } from '../../entities/admin.schema';
+import { LoginAdminService } from './login-admin/login-admin.service';
 
 @Module({
   imports: [
@@ -11,6 +12,6 @@ import { AdminEntity, AdminSchema } from '../../entities/admin.schema';
     ]),
   ],
   controllers: [AdminsController],
-  providers: [CreateAdminService],
+  providers: [CreateAdminService, LoginAdminService],
 })
 export class AdminModule {}
