@@ -16,8 +16,9 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "types": ["node"]  // Asegúrate de que esto esté presente
   },
-  "include": ["src/**/*", "test/**/*.spec.ts"],  // Asegúrate de incluir tus archivos de prueba
+  "include": ["src/**/*", "test/**/*.spec.ts"],
   "exclude": ["node_modules", "dist"]
 }
