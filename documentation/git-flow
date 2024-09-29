@@ -1,5 +1,4 @@
 
----
 # 🚀 Features derivadas de las Historias de Usuario
 
 1. **📚 Feature 1: Crear Libro**
@@ -71,6 +70,21 @@
      - Implementar validaciones para los campos requeridos (nombre, apellido, biografía, etc.).
      - Manejar errores en la creación de autores, como duplicados o campos vacíos.
      - Almacenar la información del autor en la base de datos de manera segura.
+
+10. **🔒 Feature 10: Proteger Rutas para Administradores**
+    - **Descripción:** Implementar protección en rutas críticas para asegurar que solo los administradores tengan acceso.
+    - **Historia relacionada:** Historia 10
+    - **Tareas:**
+      - Crear un middleware o guard para verificar los permisos de administrador.
+      - Manejar respuestas de error 403 para usuarios no autorizados.
+
+11. **🗝️ Feature 11: Login de Administrador**
+    - **Descripción:** Permitir a los administradores iniciar sesión en la API para acceder a las funcionalidades.
+    - **Historia relacionada:** Historia 11
+    - **Tareas:**
+      - Crear un endpoint para el inicio de sesión de administradores.
+      - Implementar la verificación de credenciales y la generación de un token de autenticación.
+      - Manejar errores de autenticación y devolver mensajes claros en caso de fallos.
 
 ---
 

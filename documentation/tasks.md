@@ -152,4 +152,42 @@
 - `class-validator` para validaciones.
 - `TypeORM` o `Mongoose` para interacción con la base de datos.
 
+Aquí tienes las dos nuevas tareas, integradas en tu sistema de historias de usuario:
+
 ---
+
+### 🔒 Historia 10: Proteger rutas para administradores
+**Como** administrador del sistema,  
+**Quiero** que ciertas rutas de la API estén protegidas,  
+**Para** asegurar que solo los administradores puedan acceder a funcionalidades críticas.
+
+- **Given:** Un usuario está intentando acceder a una ruta protegida.
+- **When:** El usuario envía una solicitud a una ruta que requiere privilegios de administrador.
+- **Then:** La API debe verificar que el usuario tenga permisos de administrador.
+- **And:** Si el usuario no es un administrador,  
+**Then:** la API debe devolver un error 403 (Prohibido).
+
+**Using:**
+- `@nestjs/common` para controladores y servicios.
+- Middleware o guardias de seguridad (por ejemplo, `@nestjs/passport`) para verificar roles y permisos.
+
+---
+
+### 🗝️ Historia 11: Login de administrador
+**Como** administrador del sistema,  
+**Quiero** poder iniciar sesión en la API,  
+**Para** acceder a mis funcionalidades y gestionar el sistema.
+
+- **Given:** Un administrador tiene credenciales (email y contraseña).
+- **When:** El administrador envía una solicitud de inicio de sesión a la API.
+- **Then:** La API debe verificar las credenciales y, si son válidas, devolver un token de autenticación.
+- **And:** Si las credenciales son incorrectas,  
+**Then:** la API debe devolver un error claro indicando que la autenticación ha fallado.
+
+**Using:**
+- `@nestjs/common` para controladores y servicios.
+- `bcryptjs` para comparar la contraseña encriptada.
+- `jsonwebtoken` para generar y devolver el token de autenticación.
+
+---
+
