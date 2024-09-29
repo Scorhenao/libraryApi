@@ -1,4 +1,3 @@
----
 ### 📚 Historia 1: Crear un libro en la API
 **Como** administrador de la biblioteca,  
 **Quiero** agregar nuevos libros al sistema,  
