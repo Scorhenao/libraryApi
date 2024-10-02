@@ -2,6 +2,8 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Author } from 'src/common/interfaces'; // Asegúrate de importar correctamente la interfaz Author
 
 export class UpdateBookResponseDto {
+  status: string = 'success';
+
   @ApiProperty({ description: 'Title of the book' })
   titulo: string;
 

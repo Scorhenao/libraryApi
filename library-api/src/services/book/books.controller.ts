@@ -71,6 +71,8 @@ export class BooksController {
   }
 
   @Get()
+  @ApiBearerAuth()
+  @UseGuards(AdminGuard)
   @ApiResponse({
     status: 200,
     description: 'List of all books',
@@ -128,12 +130,14 @@ export class BooksController {
         name: book.author.name,
         lastName: book.author.lastName,
       },
-      publicatedAt: book.publicatedAt, // No convertir a string
+      publicatedAt: book.publicatedAt,
       genre: book.genre,
     };
   }
 
   @Patch(':id')
+  @ApiBearerAuth()
+  @UseGuards(AdminGuard)
   @ApiResponse({
     status: 200,
     description: 'Book updated successfully',
@@ -147,6 +151,7 @@ export class BooksController {
     const updatedBook = await this.updateBookService.update(id, updateBookDto);
 
     return {
+      status: 'success',
       titulo: updatedBook.titulo,
       author: {
         _id: updatedBook.author._id,
@@ -158,6 +163,8 @@ export class BooksController {
     };
   }
   @Delete(':id')
+  @ApiBearerAuth()
+  @UseGuards(AdminGuard)
   @HttpCode(204) // Establece el código de estado de respuesta
   @ApiResponse({
     status: 204,
