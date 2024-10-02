@@ -6,6 +6,8 @@ import { ErrorHandlingInterceptor } from './common/interceptors/error-handling.i
 import { ConfigurationModule } from './config/config.module';
 import { AuthorsModule } from './services/author/authors.module';
 import { AdminModule } from './services/admin/admins.module';
+import { PaypalService } from './payments/paypal/paypal.service';
+import { PaymentsController } from './payments/payments.controller';
 
 @Module({
   imports: [
@@ -20,6 +22,8 @@ import { AdminModule } from './services/admin/admins.module';
       provide: APP_INTERCEPTOR,
       useClass: ErrorHandlingInterceptor,
     },
+    PaypalService,
   ],
+  controllers: [PaymentsController],
 })
 export class AppModule {}

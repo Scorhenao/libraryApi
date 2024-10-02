@@ -7,6 +7,13 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  // Habilitar CORS
+  app.enableCors({
+    origin: 'http://127.0.0.1:5500', // Reemplaza con tu origen
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+  });
+
   // Configurar Swagger
   const config = new DocumentBuilder()
     .setTitle('Library API')

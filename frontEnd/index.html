@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PayPal Sandbox Payment</title>
+  <script src="https://www.paypal.com/sdk/js?client-id=AZKuroLFQ7SsyogoCvbon8vJhg1yhuZWPmgYo_G2yV6hpLNMMbcEyt7fGGYmD1srT2nIqU6KGaG3uLIz"></script> <!-- Reemplaza con tu Client ID de Sandbox -->
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    input[type="number"] {
+      padding: 10px;
+      margin: 10px 0;
+      width: 200px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      padding: 10px 15px;
+      background-color: #0070ba;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #005f8c;
+    }
+  </style>
+</head>
+<body>
+  <h1>Pagar con PayPal</h1>
+
+  <form id="payment-form">
+    <label for="amount">Monto a pagar (USD):</label>
+    <input type="number" id="amount" name="amount" min="0.01" step="0.01" placeholder="10.00" required>
+    <button type="submit">Continuar al Pago</button>
+  </form>
+
+  <!-- Contenedor del botón de PayPal -->
+  <div id="paypal-button-container"></div>
+
+  <script>
+    // Manejar el envío del formulario
+    document.getElementById('payment-form').addEventListener('submit', function(event) {
+      event.preventDefault(); // Evitar el envío normal del formulario
+
+      // Obtener el monto ingresado por el usuario
+      const amount = document.getElementById('amount').value;
+
+      // Crear la orden de pago
+      createOrder(amount);
+    });
+
+    // Crear la orden de pago
+    const createOrder = async (amount) => {
+      const response = await fetch('http://localhost:3000/payments/create-order', {  // Ruta a tu backend en NestJS
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ amount }) // Usar el monto ingresado por el usuario
+      });
+
+      if (!response.ok) {
+        alert('Error al crear la orden de pago');
+        return;
+      }
+
+      const data = await response.json();
+      renderPayPalButton(data.orderId);  // Renderizar el botón de PayPal después de crear la orden
+    };
+
+    // Renderizar el botón de PayPal
+    const renderPayPalButton = (orderId) => {
+      paypal.Buttons({
+        createOrder: () => orderId,  // Pasar el ID de la orden
+        onApprove: async (data) => {
+          const response = await fetch(`http://localhost:3000/payments/capture-order/${data.orderID}`, {  // Ruta a tu backend para capturar la orden
+            method: 'POST'
+          });
+
+          if (!response.ok) {
+            alert('Error al capturar la orden');
+            return;
+          }
+
+          const captureData = await response.json();
+          alert(`Estado del pago: ${captureData.status}`);
+        }
+      }).render('#paypal-button-container');  // Renderiza el botón en el div
+    };
+  </script>
+</body>
+</html>
