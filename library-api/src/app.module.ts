@@ -5,6 +5,7 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
 import { ErrorHandlingInterceptor } from './common/interceptors/error-handling.interceptor';
 import { ConfigurationModule } from './config/config.module';
 import { AuthorsModule } from './services/author/authors.module';
+import { AdminModule } from './services/admin/admins.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { AuthorsModule } from './services/author/authors.module';
     CommonModule,
     BooksModule,
     AuthorsModule,
+    AdminModule,
   ],
   providers: [
     {

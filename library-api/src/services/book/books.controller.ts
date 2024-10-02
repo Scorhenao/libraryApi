@@ -12,8 +12,9 @@ import {
   Patch,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { BookDto } from './find-books/dto/book.dto';
 import { UseInterceptors } from '@nestjs/common';
 import { UpdateBookDto } from './update-book/dto/update-book.dto';
@@ -23,6 +24,7 @@ import { UpdateBookResponseDto } from './update-book/dto/update-book-response.dt
 import { DeleteBookService } from './delete-book/delete-book.service';
 import { DeleteBookResponseDto } from './delete-book/dto/delete-book-response.dto';
 import { BookResponseDto } from './find-books/dto/find-all-books-response.dto';
+import { AdminGuard } from 'src/common/guards/admin.guard';
 
 @ApiTags('books')
 @UseInterceptors(ErrorHandlingInterceptor) // Aplica el interceptor a todo el controlador
@@ -36,16 +38,32 @@ export class BooksController {
   ) {}
 
   @Post()
+  @ApiBearerAuth()
+  @UseGuards(AdminGuard)
+  @ApiBody({ type: CreateBookDto })
+  @ApiResponse({
+    status: 201,
+    description: 'El libro ha sido creado exitosamente',
+    type: CreateBookResponseDto,
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Error al crear el libro',
+  })
+  @ApiResponse({
+    status: 403,
+    description: 'Access denied: You are not an admin',
+  })
   async create(
     @Body() createBookDto: CreateBookDto,
   ): Promise<CreateBookResponseDto> {
     const createdBook = await this.createBookService.create(createBookDto);
     return {
-      status: 'success', // Asegúrate de incluir el estado
+      status: 'success',
       data: {
-        id: createdBook.id, // ID del libro
+        id: createdBook.id,
         titulo: createdBook.titulo,
-        author: createdBook.author._id, // Accede al _id del autor
+        author: createdBook.author._id,
         publicatedAt: createdBook.publicatedAt,
         genre: createdBook.genre,
       },
